@@ -7,7 +7,7 @@ export default function SignUp(props) {
       <Link to="/">Inicio</Link>
       <h1>Registro</h1>
       <p>
-        ¿Tienes ya una cuenta? <Link to="/log-in">Log In</Link>
+        ¿Tienes ya una cuenta? <Link to="/log-in">Log in</Link>
       </p>
     </>
   );
