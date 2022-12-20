@@ -1,11 +1,17 @@
 import React from "react";
-import { Container, Navbar } from "react-bootstrap";
+import { Button, Container, Navbar, Form } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-function Header(props) {
+function Header({ isLoggedIn }) {
   return (
     <header>
-      <Navbar bg="primary" variant="dark" expand="lg">
+      <Navbar
+        collapseOnSelect
+        bg="primary"
+        variant="dark"
+        expand="lg"
+        className="px-3"
+      >
         <LinkContainer to="/">
           <Navbar.Brand>
             <img
@@ -18,8 +24,14 @@ function Header(props) {
             YATA HTA
           </Navbar.Brand>
         </LinkContainer>
-        <Navbar.Toggle />
-        <Navbar.Collapse />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse className="justify-content-end">
+          {isLoggedIn && (
+            <Form>
+              <Button type="button">Log out</Button>
+            </Form>
+          )}
+        </Navbar.Collapse>
       </Navbar>
     </header>
   );

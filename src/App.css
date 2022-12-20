@@ -10,6 +10,15 @@
   text-align: center;
 }
 
+.middle-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto auto;
+  width: fit-content;
+}
+
 /* .card {
   margin: auto;
   width: fit-content;

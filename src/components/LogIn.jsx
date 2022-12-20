@@ -6,11 +6,15 @@ import { Formik } from "formik";
 
 export default function LogIn(props) {
   const [isSubmitted, setSubmitted] = useState(false);
-  const onSubmit = (values, actions) => setSubmitted(true);
 
   if (isSubmitted) {
     return <Navigate to="/" />;
   }
+
+  const onSubmit = (values, actions) => {
+    props.logIn(values.username, values.password);
+    setSubmitted(true);
+  };
 
   return (
     <>
