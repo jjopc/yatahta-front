@@ -1,10 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import { Breadcrumb, Card, Button, Form } from "react-bootstrap";
 import Header from "./ui/containers/Header";
 import { Formik } from "formik";
 
 export default function SignUp(props) {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const onSubmit = (values, actions) => setIsSubmitted(true);
+
+  if (isSubmitted) {
+    return <Navigate to="/log-in" />;
+  }
+
   return (
     <>
       <Header />
@@ -12,7 +19,7 @@ export default function SignUp(props) {
         <Breadcrumb.Item href="/#/">Inicio</Breadcrumb.Item>
         <Breadcrumb.Item active>Sign up</Breadcrumb.Item>
       </Breadcrumb>
-      <Card className="shadow" style={{ margin: "auto", width: "fit-content" }}>
+      <Card className="shadow" style={{ margin: "auto", width: "50%" }}>
         <Card.Header as="h5">Registro</Card.Header>
         <Card.Body>
           <Formik
@@ -22,9 +29,9 @@ export default function SignUp(props) {
               password1: "",
               password2: "",
             }}
-            onSubmit={(values, actions) => console.log(values)}
+            onSubmit={onSubmit}
           >
-            {(handleChange, handleSubmit, values) => (
+            {({ handleChange, handleSubmit, values }) => (
               <Form noValidate>
                 <Form.Group className="mb-3" controlId="username">
                   <Form.Label>Nombre de usuario:</Form.Label>

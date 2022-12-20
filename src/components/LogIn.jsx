@@ -19,7 +19,7 @@ export default function LogIn(props) {
         <Breadcrumb.Item href="/#/">Inicio</Breadcrumb.Item>
         <Breadcrumb.Item active>Log in</Breadcrumb.Item>
       </Breadcrumb>
-      <Card className="shadow" style={{ margin: "auto", width: "fit-content" }}>
+      <Card className="shadow" style={{ margin: "auto", width: "50%" }}>
         <Card.Header as="h5">Log in</Card.Header>
         <Card.Body>
           <Formik
