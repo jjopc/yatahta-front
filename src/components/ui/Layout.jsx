@@ -19,10 +19,13 @@ export default function Layout({ isLoggedIn, children }) {
           <img
             src="src/assets/stethoscope.svg"
             alt="Logo de YATA HTA"
-            width={50}
-            height={50}
+            width={90}
+            height={90}
           />
-          <h1>YATA HTA</h1>
+          <div>
+            <h1>YATA</h1>
+            <h1>HTA</h1>
+          </div>
         </Container>
         <ButtonGroup>
           <LinkContainer to="/sign-up">

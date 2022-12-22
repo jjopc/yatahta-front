@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Breadcrumb, Card, Button, Form } from "react-bootstrap";
+import { Breadcrumb, Card, Button, Form, Container } from "react-bootstrap";
 import Header from "./ui/containers/Header";
 import { Formik } from "formik";
 
 export default function LogIn(props) {
   const [isSubmitted, setSubmitted] = useState(false);
 
-  if (isSubmitted) {
+  if (props.isLoggedIn || isSubmitted) {
     return <Navigate to="/" />;
   }
 
-  const onSubmit = (values, actions) => {
-    props.logIn(values.username, values.password);
-    setSubmitted(true);
+  const onSubmit = async (values, actions) => {
+    try {
+      await props.logIn(values.username, values.password);
+      setSubmitted(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -24,7 +28,24 @@ export default function LogIn(props) {
         <Breadcrumb.Item active>Log in</Breadcrumb.Item>
       </Breadcrumb>
       <Card className="shadow" style={{ margin: "auto", width: "50%" }}>
-        <Card.Header as="h5">Log in</Card.Header>
+        <Card.Header>
+          <Container
+            fluid
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src="src/assets/stethoscope.svg"
+              alt="Logo de YATA HTA"
+              width={50}
+              height={50}
+            />
+            <h1>YATA HTA</h1>
+          </Container>
+        </Card.Header>
         <Card.Body>
           <Formik
             initialValues={{
@@ -53,7 +74,11 @@ export default function LogIn(props) {
                   />
                 </Form.Group>
                 <div className="d-grid mb-3">
-                  <Button type="submit" variant="primary" onClick={handleSubmit}>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    onClick={handleSubmit}
+                  >
                     Log in
                   </Button>
                 </div>

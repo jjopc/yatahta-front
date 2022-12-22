@@ -1,3 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+
+.logo {
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+
 .middle-center {
   top: 0;
   right: 0;
