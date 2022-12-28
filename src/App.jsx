@@ -25,15 +25,25 @@ function App() {
         JSON.stringify(response.data)
       );
       setIsLoggedIn(true);
+      return { response, isError: false };
     } catch (error) {
       console.log(error);
+      return { response: error, isError: true };
     }
+  };
+
+  const logOut = () => {
+    window.localStorage.removeItem("yatahta.auth");
+    setIsLoggedIn(false);
   };
 
   return (
     <Routes>
-      <Route path="/" element={<Layout isLoggedIn={isLoggedIn} />} />
-      <Route path="/sign-up" element={<SignUp isLoggedIn={isLoggedIn}/>} />
+      <Route
+        path="/"
+        element={<Layout isLoggedIn={isLoggedIn} logOut={logOut} />}
+      />
+      <Route path="/sign-up" element={<SignUp isLoggedIn={isLoggedIn} />} />
       <Route
         path="/log-in"
         element={<LogIn logIn={logIn} isLoggedIn={isLoggedIn} />}

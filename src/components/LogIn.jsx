@@ -1,20 +1,37 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Breadcrumb, Card, Button, Form, Container } from "react-bootstrap";
+import {
+  Breadcrumb,
+  Card,
+  Button,
+  Form,
+  Container,
+  Alert,
+} from "react-bootstrap";
 import Header from "./ui/containers/Header";
 import { Formik } from "formik";
 
-export default function LogIn(props) {
+export default function LogIn({ isLoggedIn, logIn }) {
   const [isSubmitted, setSubmitted] = useState(false);
 
-  if (props.isLoggedIn || isSubmitted) {
+  if (isLoggedIn || isSubmitted) {
     return <Navigate to="/" />;
   }
 
   const onSubmit = async (values, actions) => {
     try {
-      await props.logIn(values.username, values.password);
-      setSubmitted(true);
+      const { response, isError } = await logIn(
+        values.username,
+        values.password
+      );
+      if (isError) {
+        const data = response.response.data;
+        for (const value in data) {
+          actions.setFieldError(value, data[value].join(" "));
+        }
+      } else {
+        setSubmitted(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -54,35 +71,42 @@ export default function LogIn(props) {
             }}
             onSubmit={onSubmit}
           >
-            {({ handleChange, handleSubmit, values }) => (
-              <Form noValidate>
-                <Form.Group className="mb-3" controlId="username">
-                  <Form.Label>Nombre de usuario:</Form.Label>
-                  <Form.Control
-                    name="username"
-                    onChange={handleChange}
-                    value={values.username}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="password">
-                  <Form.Label>Contraseña:</Form.Label>
-                  <Form.Control
-                    name="password"
-                    onChange={handleChange}
-                    type="password"
-                    value={values.password}
-                  />
-                </Form.Group>
-                <div className="d-grid mb-3">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    onClick={handleSubmit}
-                  >
-                    Log in
-                  </Button>
-                </div>
-              </Form>
+            {({ errors, handleChange, handleSubmit, isSubmitting, values }) => (
+              <>
+              // TODO: Mostrar errores en campos concretos
+                {"__all__" in errors && (
+                  <Alert variant="danger">{errors.__all__}</Alert>
+                )}
+                <Form noValidate>
+                  <Form.Group className="mb-3" controlId="username">
+                    <Form.Label>Nombre de usuario:</Form.Label>
+                    <Form.Control
+                      name="username"
+                      onChange={handleChange}
+                      value={values.username}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="password">
+                    <Form.Label>Contraseña:</Form.Label>
+                    <Form.Control
+                      name="password"
+                      onChange={handleChange}
+                      type="password"
+                      value={values.password}
+                    />
+                  </Form.Group>
+                  <div className="d-grid mb-3">
+                    <Button
+                      disabled={isSubmitting}
+                      type="submit"
+                      variant="primary"
+                      onClick={handleSubmit}
+                    >
+                      Log in
+                    </Button>
+                  </div>
+                </Form>
+              </>
             )}
           </Formik>
           <Card.Text className="text-center">

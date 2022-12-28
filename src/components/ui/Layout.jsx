@@ -3,10 +3,10 @@ import Header from "./containers/Header";
 import { Button, ButtonGroup, Container, Stack } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-export default function Layout({ isLoggedIn, children }) {
+export default function Layout({ isLoggedIn, logOut, children }) {
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header isLoggedIn={isLoggedIn} logOut={logOut} />
       <Container fluid className="middle-flex">
         <Container
           fluid

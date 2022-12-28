@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Container, Navbar, Form } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-function Header({ isLoggedIn }) {
+function Header({ isLoggedIn, logOut }) {
   return (
     <header>
       <Navbar
@@ -28,7 +28,9 @@ function Header({ isLoggedIn }) {
         <Navbar.Collapse className="justify-content-end">
           {isLoggedIn && (
             <Form>
-              <Button type="button">Log out</Button>
+              <Button data-cy="logOut" type="button" onClick={() => logOut()}>
+                Log out
+              </Button>
             </Form>
           )}
         </Navbar.Collapse>
