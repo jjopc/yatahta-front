@@ -27,14 +27,18 @@ export default function Layout({ isLoggedIn, children }) {
             <h1>HTA</h1>
           </div>
         </Container>
-        <ButtonGroup>
-          <LinkContainer to="/sign-up">
-            <Button data-cy="signUp">Sign up</Button>
-          </LinkContainer>
-          <LinkContainer to="/log-in">
-            <Button data-cy="logIn">Log in</Button>
-          </LinkContainer>
-        </ButtonGroup>
+        {isLoggedIn ? (
+          <></>
+        ) : (
+          <ButtonGroup>
+            <LinkContainer to="/sign-up">
+              <Button data-cy="signUp">Sign up</Button>
+            </LinkContainer>
+            <LinkContainer to="/log-in">
+              <Button data-cy="logIn">Log in</Button>
+            </LinkContainer>
+          </ButtonGroup>
+        )}
       </Container>
     </>
   );

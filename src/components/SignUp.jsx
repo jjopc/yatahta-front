@@ -12,6 +12,10 @@ export default function SignUp(props) {
     return <Navigate to="/log-in" />;
   }
 
+  if (props.isLoggedIn) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <>
       <Header />
@@ -20,7 +24,7 @@ export default function SignUp(props) {
         <Breadcrumb.Item active>Sign up</Breadcrumb.Item>
       </Breadcrumb>
       <Card className="shadow" style={{ margin: "auto", width: "50%" }}>
-      <Card.Header>
+        <Card.Header>
           <Container
             fluid
             style={{

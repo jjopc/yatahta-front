@@ -33,7 +33,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout isLoggedIn={isLoggedIn} />} />
-      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/sign-up" element={<SignUp isLoggedIn={isLoggedIn}/>} />
       <Route
         path="/log-in"
         element={<LogIn logIn={logIn} isLoggedIn={isLoggedIn} />}
