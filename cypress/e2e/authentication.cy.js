@@ -77,12 +77,24 @@ describe("Authentication", function () {
   });
 
   it("Can sign up.", function () {
+    cy.intercept("POST", "add_doctor", {
+      statusCode: 201,
+      body: {
+        id: 1,
+        username: "gary.cole",
+        email: "gary.cole@example.com",
+        password1: "pAssw0rd",
+        password2: "pAssw0rd",
+      },
+    }).as("signUp");
+
     cy.visit("/#/sign-up");
     cy.get("input#username").type("gary.cole");
     cy.get("input#email").type("gary.cole@example.com");
     cy.get("input#password1").type("pAssw0rd", { log: false });
     cy.get("input#password2").type("pAssw0rd", { log: false });
     cy.get("button").contains("Registrarme").click();
+    cy.wait("@signUp");
     cy.hash().should("eq", "#/log-in");
   });
 });

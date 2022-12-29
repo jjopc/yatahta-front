@@ -73,7 +73,7 @@ export default function LogIn({ isLoggedIn, logIn }) {
           >
             {({ errors, handleChange, handleSubmit, isSubmitting, values }) => (
               <>
-              // TODO: Mostrar errores en campos concretos
+                {/* TODO: Mostrar errores en campos concretos */}
                 {"__all__" in errors && (
                   <Alert variant="danger">{errors.__all__}</Alert>
                 )}

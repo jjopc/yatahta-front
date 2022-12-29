@@ -8,7 +8,7 @@ export default defineConfig({
     baseUrl: "http://localhost:5173",
     env: {
       credentials: {
-        username: "gary.cole@example.com",
+        username: "gary.cole",
         password: "pAssw0rd",
       },
     },
