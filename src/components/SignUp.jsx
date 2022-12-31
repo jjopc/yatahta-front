@@ -87,41 +87,65 @@ export default function SignUp({ isLoggedIn }) {
                   <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Nombre de usuario:</Form.Label>
                     <Form.Control
+                      className={"username" in errors ? "is-invalid" : ""}
                       name="username"
                       onChange={handleChange}
                       value={values.username}
                       required
                     />
+                    {"username" in errors && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.username}
+                      </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Correo electrónico:</Form.Label>
                     <Form.Control
+                      className={"email" in errors ? "is-invalid" : ""}
                       name="email"
                       type="email"
                       onChange={handleChange}
                       value={values.email}
                       required
                     />
+                    {"email" in errors && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                      </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="password1">
                     <Form.Label>Contraseña:</Form.Label>
                     <Form.Control
+                      className={"password1" in errors ? "is-invalid" : ""}
                       name="password1"
                       type="password"
                       onChange={handleChange}
                       value={values.password1}
                       required
                     />
+                    {"password1" in errors && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.password1}
+                      </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="password2">
                     <Form.Label>Repita la contraseña:</Form.Label>
                     <Form.Control
+                      className={"password2" in errors ? "is-invalid" : ""}
                       name="password2"
                       type="password"
                       onChange={handleChange}
                       value={values.password2}
                       required
                     />
+                    {"password2" in errors && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.password2}
+                      </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <div className="d-grid mb-3">
                     <Button

@@ -26,7 +26,9 @@ export default function LogIn({ isLoggedIn, logIn }) {
       );
       if (isError) {
         const data = response.response.data;
+        console.log(data);
         for (const value in data) {
+          console.log(value);
           actions.setFieldError(value, data[value].join(" "));
         }
       } else {
@@ -81,19 +83,32 @@ export default function LogIn({ isLoggedIn, logIn }) {
                   <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Nombre de usuario:</Form.Label>
                     <Form.Control
+                      className={"username" in errors ? "is-invalid" : ""}
                       name="username"
                       onChange={handleChange}
                       value={values.username}
+                      required
                     />
+                    {"username" in errors && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.username}
+                      </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Contraseña:</Form.Label>
                     <Form.Control
+                      className={"password" in errors ? "is-invalid" : ""}
                       name="password"
                       onChange={handleChange}
                       type="password"
                       value={values.password}
                     />
+                    {"password" in errors && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.password}
+                      </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <div className="d-grid mb-3">
                     <Button

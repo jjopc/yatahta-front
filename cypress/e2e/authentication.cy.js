@@ -97,4 +97,25 @@ describe("Authentication", function () {
     cy.wait("@signUp");
     cy.hash().should("eq", "#/log-in");
   });
+
+  it.only("Show invalid fields on sign up error.", function () {
+    cy.intercept("POST", "add_doctor", {
+      statusCode: 400,
+      body: {
+        username: ["A user with that username already exists."],
+      },
+    }).as("signUp");
+
+    cy.visit("/#/sign-up");
+    cy.get("input#username").type("gary.cole");
+    cy.get("input#email").type("gary.cole@example.com");
+    cy.get("input#password1").type("pAssw0rd", { log: false });
+    cy.get("input#password2").type("pAssw0rd", { log: false });
+    cy.get("button").contains("Registrarme").click();
+    cy.wait("@signUp");
+    cy.get("div.invalid-feedback").contains(
+      "A user with that username already exists"
+    );
+    cy.hash().should("eq", "#/sign-up");
+  });
 });
