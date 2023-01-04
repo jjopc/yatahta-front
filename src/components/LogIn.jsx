@@ -9,7 +9,8 @@ import {
   Alert,
 } from "react-bootstrap";
 import Header from "./ui/containers/Header";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 export default function LogIn({ isLoggedIn, logIn }) {
   const [isSubmitted, setSubmitted] = useState(false);
@@ -38,6 +39,17 @@ export default function LogIn({ isLoggedIn, logIn }) {
       console.log(error);
     }
   };
+
+  const logInSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(2, "¡Nombre de usuario demasiado corto!")
+      .max(150, "¡Nombre de usuario demasiado largo!")
+      .required("Campo obligatorio"),
+    password: Yup.string()
+      .min(8, "¡Contraseña demasiado corta!")
+      .max(50, "¡Contraseña demasiado larga!")
+      .required("Campo obligatorio"),
+  });
 
   return (
     <>
@@ -71,11 +83,19 @@ export default function LogIn({ isLoggedIn, logIn }) {
               username: "",
               password: "",
             }}
+            validationSchema={logInSchema}
             onSubmit={onSubmit}
           >
-            {({ errors, handleChange, handleSubmit, isSubmitting, values }) => (
+            {({
+              errors,
+              touched,
+              handleChange,
+              handleSubmit,
+              handleBlur,
+              isSubmitting,
+              values,
+            }) => (
               <>
-                {/* TODO: Mostrar errores en campos concretos */}
                 {"__all__" in errors && (
                   <Alert variant="danger">{errors.__all__}</Alert>
                 )}
@@ -83,32 +103,39 @@ export default function LogIn({ isLoggedIn, logIn }) {
                   <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Nombre de usuario:</Form.Label>
                     <Form.Control
-                      className={"username" in errors ? "is-invalid" : ""}
+                      className={
+                        touched.username && errors.username ? "is-invalid" : ""
+                      }
                       name="username"
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       value={values.username}
                       required
                     />
-                    {"username" in errors && (
-                      <Form.Control.Feedback type="invalid">
-                        {errors.username}
-                      </Form.Control.Feedback>
-                    )}
+                    <ErrorMessage
+                      name="username"
+                      component="div"
+                      className="invalid-feedback"
+                    />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Contraseña:</Form.Label>
                     <Form.Control
-                      className={"password" in errors ? "is-invalid" : ""}
+                      className={
+                        touched.password && errors.password ? "is-invalid" : ""
+                      }
                       name="password"
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       type="password"
                       value={values.password}
+                      required
                     />
-                    {"password" in errors && (
-                      <Form.Control.Feedback type="invalid">
-                        {errors.password}
-                      </Form.Control.Feedback>
-                    )}
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="invalid-feedback"
+                    />
                   </Form.Group>
                   <div className="d-grid mb-3">
                     <Button

@@ -98,7 +98,7 @@ describe("Authentication", function () {
     cy.hash().should("eq", "#/log-in");
   });
 
-  it.only("Show invalid fields on sign up error.", function () {
+  it("Show invalid fields on sign up error.", function () {
     cy.intercept("POST", "add_doctor", {
       statusCode: 400,
       body: {
