@@ -48,7 +48,7 @@ describe("Authentication", function () {
     cy.intercept("POST", "login", {
       statusCode: 400,
       body: {
-        __all__: [
+        detail: [
           "Please enter a correct username and password. " +
             "Note that both fields may be case-sensitive.",
         ],

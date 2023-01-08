@@ -28,9 +28,9 @@ export default function LogIn({ isLoggedIn, logIn }) {
       if (isError) {
         const data = response.response.data;
         console.log(data);
-        for (const value in data) {
-          console.log(value);
-          actions.setFieldError(value, data[value].join(" "));
+        for (const key in data) {
+          console.log(data[key]);
+          actions.setFieldError(key, data[key]);
         }
       } else {
         setSubmitted(true);
@@ -96,8 +96,8 @@ export default function LogIn({ isLoggedIn, logIn }) {
               values,
             }) => (
               <>
-                {"__all__" in errors && (
-                  <Alert variant="danger">{errors.__all__}</Alert>
+                {"detail" in errors && (
+                  <Alert variant="danger">{errors.detail}</Alert>
                 )}
                 <Form noValidate>
                   <Form.Group className="mb-3" controlId="username">
