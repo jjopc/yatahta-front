@@ -7,6 +7,7 @@ import {
   Form,
   Container,
   Alert,
+  InputGroup,
 } from "react-bootstrap";
 import Header from "./ui/containers/Header";
 import { Formik, ErrorMessage } from "formik";
@@ -14,6 +15,7 @@ import * as Yup from "yup";
 
 export default function LogIn({ isLoggedIn, logIn }) {
   const [isSubmitted, setSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   if (isLoggedIn || isSubmitted) {
     return <Navigate to="/" />;
@@ -120,22 +122,34 @@ export default function LogIn({ isLoggedIn, logIn }) {
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Contraseña:</Form.Label>
-                    <Form.Control
-                      className={
-                        touched.password && errors.password ? "is-invalid" : ""
-                      }
-                      name="password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      type="password"
-                      value={values.password}
-                      required
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="invalid-feedback"
-                    />
+                    <InputGroup>
+                      <Form.Control
+                        className={
+                          touched.password && errors.password
+                            ? "is-invalid"
+                            : ""
+                        }
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.password}
+                        required
+                      />
+                      <Button
+                        variant="outline-secondary"
+                        id="btnShowPassword"
+                        className="input-group-append"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? "Ocultar" : "Mostrar"}
+                      </Button>
+                      <ErrorMessage
+                        name="password"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </InputGroup>
                   </Form.Group>
                   <div className="d-grid mb-3">
                     <Button
