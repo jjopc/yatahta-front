@@ -24,8 +24,11 @@ export default function SignUp({ isLoggedIn }) {
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
-  const onSubmit = async (username, email, password1, password2) => {
-    const url = "http://localhost:8000/api/users/add_doctor/";
+  const onSubmit = async (
+    { username, email, password1, password2 },
+    actions
+  ) => {
+    const url = `${import.meta.env.VITE_API_URL}/users/add_doctor/`;
     try {
       const response = await axios.post(url, {
         username,
@@ -37,6 +40,12 @@ export default function SignUp({ isLoggedIn }) {
       return { response, isError: false };
     } catch (error) {
       console.log(error);
+      const data = error.response.data;
+      console.log(data);
+      for (const key in data) {
+        console.log(data[key]);
+        actions.setFieldError(key, data[key]);
+      }
       return { response: error, isError: true };
     }
   };

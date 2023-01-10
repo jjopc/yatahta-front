@@ -17,7 +17,7 @@ function App() {
   // const logIn = (username, password) => setIsLoggedIn(true);
 
   const logIn = async (username, password) => {
-    const url = "http://localhost:8000/auth/login/";
+    const url = `${import.meta.env.VITE_AUTH_URL}/login/`;
     try {
       const response = await axios.post(url, { username, password });
       window.localStorage.setItem(
