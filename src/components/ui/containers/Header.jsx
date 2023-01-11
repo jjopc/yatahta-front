@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Container, Navbar, Form } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { getUser } from "../../../services/AuthService";
 
 function Header({ isLoggedIn, logOut }) {
+  const user = getUser();
   return (
     <header>
       <Navbar
@@ -24,6 +26,7 @@ function Header({ isLoggedIn, logOut }) {
             YATA HTA
           </Navbar.Brand>
         </LinkContainer>
+        {/* <LinkContainer to="/">{username}</LinkContainer> */}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           {isLoggedIn && (

@@ -14,11 +14,8 @@ import { Formik, ErrorMessage } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 
-// TODO: Refactor porque no necesito un SignUp...sino un registro de médicos
-// Me he equivocado, pero me sirve de base, tengo que cambiar el nombre del componente
-
-// TODO: https://codesandbox.io/s/nw193yq32l?file=/index.js:526-535 ejemplo con setStatus
-// para cuando necesite mostrar los errores devueltos por la API
+// TODO: Refactor porque esto se implementará en la fase de app web para pacientes,
+// pero me sirve para cuando haga la página de agregar un nuevo médico
 export default function SignUp({ isLoggedIn }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
