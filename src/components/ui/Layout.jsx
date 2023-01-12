@@ -7,7 +7,7 @@ export default function Layout({ isLoggedIn, logOut, children }) {
   return (
     <>
       <Header isLoggedIn={isLoggedIn} logOut={logOut} />
-      {isLoggedIn ? <Home /> : <Landing />}
+      {children}
     </>
   );
 }
