@@ -6,6 +6,7 @@ import LogIn from "./components/LogIn";
 import axios from "axios";
 
 import "./App.css";
+import DoctorPatients from "./components/DoctorPatients";
 
 function App() {
   // Implementar la lógica de comprobación de user logueado:
@@ -48,6 +49,7 @@ function App() {
         path="/log-in"
         element={<LogIn logIn={logIn} isLoggedIn={isLoggedIn} />}
       />
+      <Route path="/patients" element={<DoctorPatients />} />
     </Routes>
   );
 }

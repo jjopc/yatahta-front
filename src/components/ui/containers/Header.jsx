@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Container, Navbar, Form } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Navbar,
+  Form,
+  Nav,
+  NavDropdown,
+} from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { getUser } from "../../../services/AuthService";
 
@@ -28,7 +35,23 @@ function Header({ isLoggedIn, logOut }) {
         </LinkContainer>
         {/* <LinkContainer to="/">{username}</LinkContainer> */}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse className="justify-content-end">
+        <Navbar.Collapse>
+          <Nav className="me-auto">
+            <LinkContainer to="/patients">
+              <Nav.Link>Pacientes</Nav.Link>
+            </LinkContainer>
+            <NavDropdown title="Configuración">
+              <LinkContainer to="/">
+                <NavDropdown.Item>Cambiar contraseña</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/">
+                <NavDropdown.Item>Link</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/">
+                <NavDropdown.Item>Link</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+          </Nav>
           {isLoggedIn && (
             <Form>
               <Button data-cy="logOut" type="button" onClick={() => logOut()}>
