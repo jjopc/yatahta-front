@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   Breadcrumb,
   Card,
@@ -13,33 +13,32 @@ import Header from "./ui/containers/Header";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-export default function LogIn({ isLoggedIn, logIn }) {
+import { useDispatch, useSelector } from "react-redux";
+import { logInReducer, selectIsLoggedIn } from "../state/authSlice";
+import { clearMessage, selectMessage } from "../state/messageSlice";
+
+export default function LogIn() {
   const [isSubmitted, setSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  if (isLoggedIn || isSubmitted) {
+  const navigate = useNavigate();
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const message = useSelector(selectMessage);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
+
+  if (isLoggedIn) {
     return <Navigate to="/" />;
   }
 
-  const onSubmit = async (values, actions) => {
-    try {
-      const { response, isError } = await logIn(
-        values.username,
-        values.password
-      );
-      if (isError) {
-        const data = response.response.data;
-        console.log(data);
-        for (const key in data) {
-          console.log(data[key]);
-          actions.setFieldError(key, data[key]);
-        }
-      } else {
-        setSubmitted(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const initialValues = {
+    username: "",
+    password: "",
   };
 
   const logInSchema = Yup.object().shape({
@@ -52,6 +51,20 @@ export default function LogIn({ isLoggedIn, logIn }) {
       .max(50, "¡Contraseña demasiado larga!")
       .required("Campo obligatorio"),
   });
+
+  const handleLogin = ({ username, password }) => {
+    dispatch(logInReducer({ username, password }))
+      .unwrap()
+      .then(() => {
+        setSubmitted(true);
+        console.log("Entro por SUCCEED en handleLogin en LogIn");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("Entro por ERROR en handleLogin en LogIn");
+        setSubmitted(false);
+      });
+  };
 
   return (
     <>
@@ -81,12 +94,9 @@ export default function LogIn({ isLoggedIn, logIn }) {
         </Card.Header>
         <Card.Body>
           <Formik
-            initialValues={{
-              username: "",
-              password: "",
-            }}
+            initialValues={initialValues}
             validationSchema={logInSchema}
-            onSubmit={onSubmit}
+            onSubmit={handleLogin}
           >
             {({
               errors,
@@ -98,9 +108,7 @@ export default function LogIn({ isLoggedIn, logIn }) {
               values,
             }) => (
               <>
-                {"detail" in errors && (
-                  <Alert variant="danger">{errors.detail}</Alert>
-                )}
+                {message && <Alert variant="danger">{message}</Alert>}
                 <Form noValidate>
                   <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Nombre de usuario:</Form.Label>
@@ -153,7 +161,7 @@ export default function LogIn({ isLoggedIn, logIn }) {
                   </Form.Group>
                   <div className="d-grid mb-3">
                     <Button
-                      disabled={isSubmitting}
+                      disabled={isSubmitted}
                       type="submit"
                       variant="primary"
                       onClick={handleSubmit}
@@ -166,7 +174,8 @@ export default function LogIn({ isLoggedIn, logIn }) {
             )}
           </Formik>
           <Card.Text className="text-center">
-            ¿Aún no te has registrado? <Link to="/sign-up">¡Regístrate!</Link>
+            ¿Has olvidado tu contraseña?{" "}
+            <Link to="/password-reset">¡Recupérala!</Link>
           </Card.Text>
         </Card.Body>
       </Card>

@@ -15,12 +15,6 @@ describe("Authentication", function () {
     cy.hash().should("eq", "#/");
   });
 
-  it("Cannot visit the sign up page when logged in.", function () {
-    cy.logIn(username, password);
-    cy.visit("/#/sign-up");
-    cy.hash().should("eq", "#/");
-  });
-
   it("Cannot see links when logged in.", function () {
     cy.logIn(username, password);
     cy.get('[data-cy="signUp"]').should("not.exist");
@@ -58,30 +52,5 @@ describe("Authentication", function () {
         expect(window.localStorage.getItem("yatahta.auth")).to.be.null;
       });
     cy.get('[data-cy="logOut"]').should("not.exist");
-  });
-
-  it.skip("Can sign up.", function () {
-    cy.addUser("testuser", "testuser@email.com", password, password);
-  });
-
-  it("Show invalid fields on sign up error.", function () {
-    cy.intercept("POST", "add_doctor", {
-      statusCode: 400,
-      body: {
-        username: ["A user with that username already exists."],
-      },
-    }).as("signUp");
-
-    cy.visit("/#/sign-up");
-    cy.get("input#username").type("gary.cole");
-    cy.get("input#email").type("gary.cole@example.com");
-    cy.get("input#password1").type("pAssw0rd", { log: false });
-    cy.get("input#password2").type("pAssw0rd", { log: false });
-    cy.get("button").contains("Registrarme").click();
-    cy.wait("@signUp");
-    cy.get("div.invalid-feedback").contains(
-      "A user with that username already exists"
-    );
-    cy.hash().should("eq", "#/sign-up");
   });
 });

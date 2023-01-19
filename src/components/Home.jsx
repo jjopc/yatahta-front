@@ -4,15 +4,21 @@ import DoctorDashboard from "./DoctorDashboard";
 import Landing from "./Landing";
 import PatientDashboard from "./PatientDashboard";
 import Layout from "./ui/Layout";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../state/authSlice";
 
-export default function Home({ isLoggedIn, logOut, children }) {
+export default function Home({ children }) {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   if (!isLoggedIn) {
-    return <Landing />;
+    return (
+      <Layout>
+        <Landing />
+      </Layout>
+    );
   }
 
   return (
-    <Layout isLoggedIn={isLoggedIn} logOut={logOut}>
-      {isStaff() ? <DoctorDashboard /> : <PatientDashboard />}
-    </Layout>
+    <Layout>{isStaff() ? <DoctorDashboard /> : <PatientDashboard />}</Layout>
   );
 }

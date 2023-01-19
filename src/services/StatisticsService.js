@@ -1,11 +1,10 @@
 import axios from "axios";
 
-import { getAccessToken } from "./AuthService";
+import { getAuthHeader } from "./AuthService";
 
 export const getGeneralStatistics = async () => {
   const url = `${import.meta.env.VITE_API_URL}/statistics/`;
-  const token = getAccessToken();
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = getAuthHeader();
   try {
     const response = await axios.get(url, { headers });
     return { response, isError: false };
@@ -16,8 +15,7 @@ export const getGeneralStatistics = async () => {
 
 export const getUsersClassification = async () => {
   const url = `${import.meta.env.VITE_API_URL}/users/classification/`;
-  const token = getAccessToken();
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = getAuthHeader();
   try {
     const response = await axios.get(url, { headers });
     return { response, isError: false };

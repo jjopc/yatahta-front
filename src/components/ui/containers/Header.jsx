@@ -8,10 +8,15 @@ import {
   NavDropdown,
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { getUser } from "../../../services/AuthService";
+import { useSelector, useDispatch } from "react-redux";
+import { selectIsLoggedIn, logOutReducer } from "../../../state/authSlice";
 
-function Header({ isLoggedIn, logOut }) {
-  const user = getUser();
+function Header() {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  const dispatch = useDispatch();
+
+  // TODO: ver cómo integrar BreadCrumb aquí
   return (
     <header>
       <Navbar
@@ -19,7 +24,7 @@ function Header({ isLoggedIn, logOut }) {
         bg="primary"
         variant="dark"
         expand="lg"
-        className="px-3"
+        className="px-3 mb-3"
       >
         <LinkContainer to="/">
           <Navbar.Brand>
@@ -36,28 +41,34 @@ function Header({ isLoggedIn, logOut }) {
         {/* <LinkContainer to="/">{username}</LinkContainer> */}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse>
-          <Nav className="me-auto">
-            <LinkContainer to="/patients">
-              <Nav.Link>Pacientes</Nav.Link>
-            </LinkContainer>
-            <NavDropdown title="Configuración">
-              <LinkContainer to="/">
-                <NavDropdown.Item>Cambiar contraseña</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to="/">
-                <NavDropdown.Item>Link</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to="/">
-                <NavDropdown.Item>Link</NavDropdown.Item>
-              </LinkContainer>
-            </NavDropdown>
-          </Nav>
           {isLoggedIn && (
-            <Form>
-              <Button data-cy="logOut" type="button" onClick={() => logOut()}>
-                Log out
-              </Button>
-            </Form>
+            <>
+              <Nav className="me-auto">
+                <LinkContainer to="/patients">
+                  <Nav.Link>Pacientes</Nav.Link>
+                </LinkContainer>
+                <NavDropdown title="Configuración">
+                  <LinkContainer to="/">
+                    <NavDropdown.Item>Cambiar contraseña</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/">
+                    <NavDropdown.Item>Link</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/">
+                    <NavDropdown.Item>Link</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              </Nav>
+              <Form>
+                <Button
+                  data-cy="logOut"
+                  type="button"
+                  onClick={() => dispatch(logOutReducer())}
+                >
+                  Log out
+                </Button>
+              </Form>
+            </>
           )}
         </Navbar.Collapse>
       </Navbar>
