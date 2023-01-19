@@ -11,30 +11,28 @@ import {
 } from "react-bootstrap";
 import Header from "./ui/containers/Header";
 import { Formik, ErrorMessage } from "formik";
-import axios from "axios";
 import * as Yup from "yup";
+import { registerDoctorReducer } from "../state/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-// TODO: Refactor porque esto se implementará en la fase de app web para pacientes,
-// pero me sirve para cuando haga la página de agregar un nuevo médico
-export default function SignUp({ isLoggedIn }) {
+export default function RegisterDoctor() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
-  const onSubmit = async (
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  const handleRegisterDoctor = async (
     { username, email, password1, password2 },
     actions
   ) => {
-    const url = `${import.meta.env.VITE_API_URL}/users/add_doctor/`;
     try {
-      const response = await axios.post(url, {
-        username,
-        email,
-        password1,
-        password2,
-      });
+      const response = await dispatch(
+        registerDoctorReducer(username, email, password1, password2)
+      );
       setIsSubmitted(true);
-      return { response, isError: false };
+      return response;
     } catch (error) {
       console.log(error);
       const data = error.response.data;
@@ -43,19 +41,14 @@ export default function SignUp({ isLoggedIn }) {
         console.log(data[key]);
         actions.setFieldError(key, data[key]);
       }
-      return { response: error, isError: true };
     }
   };
 
-  if (isSubmitted) {
-    return <Navigate to="/log-in" />;
-  }
-
-  if (isLoggedIn) {
+  if (!isLoggedIn || isSubmitted) {
     return <Navigate to="/" />;
   }
 
-  const signUpSchema = Yup.object().shape({
+  const registerDoctorSchema = Yup.object().shape({
     username: Yup.string()
       .min(2, "¡Nombre de usuario demasiado corto!")
       .max(150, "¡Nombre de usuario demasiado largo!")
@@ -106,8 +99,8 @@ export default function SignUp({ isLoggedIn }) {
               password1: "",
               password2: "",
             }}
-            validationSchema={signUpSchema}
-            onSubmit={onSubmit}
+            validationSchema={registerDoctorSchema}
+            onSubmit={handleRegisterDoctor}
           >
             {({
               errors,
