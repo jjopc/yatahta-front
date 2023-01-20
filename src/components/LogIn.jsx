@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { logInReducer, selectIsLoggedIn } from "../state/authSlice";
 import { clearMessage, selectMessage } from "../state/messageSlice";
+import Layout from "./ui/Layout";
 
 export default function LogIn() {
   const [isSubmitted, setSubmitted] = useState(false);
@@ -67,8 +68,7 @@ export default function LogIn() {
   };
 
   return (
-    <>
-      <Header />
+    <Layout>
       <Breadcrumb>
         <Breadcrumb.Item href="/#/">Inicio</Breadcrumb.Item>
         <Breadcrumb.Item active>Log in</Breadcrumb.Item>
@@ -179,6 +179,6 @@ export default function LogIn() {
           </Card.Text>
         </Card.Body>
       </Card>
-    </>
+    </Layout>
   );
 }
