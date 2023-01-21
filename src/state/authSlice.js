@@ -67,7 +67,7 @@ export const authSlice = createSlice({
       window.localStorage.removeItem("yatahta.auth");
       state.isLoggedIn = false;
       state.user = null;
-      // window.location.reload();
+      window.location.reload();
     },
   },
   extraReducers(builder) {
