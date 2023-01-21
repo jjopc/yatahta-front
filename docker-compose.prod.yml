@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  client:
+    build: 
+      context: .
+    image: yatahta_front
+    command: npm run dev
+    container_name: yatahta-client
+    ports:
+      - 5173:5173
+    stdin_open: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.yatahta-front.loadbalancer.server.port=5173
+      - traefik.http.routers.yatahta-front.entrypoints=web
+      - traefik.http.routers.yatahta-front.rule=Host(`dev.yatahta.juanjodev.es`)
+      - traefik.http.middlewares.yatahta-front-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.yatahta-front.middlewares=web-https-redirect
+      - traefik.http.routers.yatahta-front-secure.entrypoints=websecure
+      - traefik.http.routers.yatahta-front-secure.rule=Host(`dev.yatahta.juanjodev.es`)
+      - traefik.http.routers.yatahta-front-secure.tls=true
+      - traefik.http.routers.yatahta-front-secure.tls.certresolver=letsencrypt
