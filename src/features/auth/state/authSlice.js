@@ -56,6 +56,7 @@ export const logInReducer = createAsyncThunk(
 );
 
 export const logOutReducer = createAsyncThunk("auth/logOut", (_, thunkAPI) => {
+  window.localStorage.removeItem("yatahta.auth");
   thunkAPI.dispatch(removePatients());
 });
 
