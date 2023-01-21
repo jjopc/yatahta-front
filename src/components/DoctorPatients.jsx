@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import Layout from "./ui/Layout";
 import { getPatients, selectPatientsList } from "../state/doctorSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../state/authSlice";
 import {
   Container,
   Row,
@@ -18,12 +19,18 @@ export default function DoctorPatients() {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
     dispatch(getPatients());
   }, [dispatch]);
 
   const patients = useSelector(selectPatientsList);
+
+  if (!isLoggedIn) {
+    return <Navigate to={"/"} />;
+  }
+
   const orderedPatients = patients.slice().sort((a, b) => a.points < b.points);
   let filteredPatients = orderedPatients;
   if (searchText !== "") {

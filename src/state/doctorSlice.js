@@ -16,7 +16,7 @@ export const getPatients = createAsyncThunk(
       const response = await axios.get(url, { headers });
       return response.data;
     } catch (error) {
-      console.error("ERROR getPatients en doctorSlice", error);
+      console.error("ERROR getPatients en doctorSlice");
       const message =
         (error.response &&
           error.response.data &&
@@ -26,7 +26,7 @@ export const getPatients = createAsyncThunk(
       thunkAPI.dispatch(setMessage(message));
       // TODO: Investigar cómo devolver valores personalizados y poder gestionar el feedback en los formularios
       // https://redux-toolkit.js.org/api/createAsyncThunk
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
