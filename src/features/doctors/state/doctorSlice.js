@@ -31,8 +31,31 @@ export const getPatients = createAsyncThunk(
   }
 );
 
+export const getNewPatientCode = createAsyncThunk(
+  "doctor/gatNewPatientCode",
+  async (arg, thunkAPI) => {
+    const url = `${import.meta.env.VITE_API_URL}/new_patient_code/`;
+    const headers = getAuthHeader();
+    try {
+      const response = await axios.get(url, { headers });
+      return response.data.patient_code;
+    } catch (error) {
+      console.error("ERROR - DOCTOR_SLICE -> getNewPatientCode en doctorSlice");
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const initialState = {
   patients: [],
+  newPatientCode: "",
 };
 
 const doctorSlice = createSlice({
@@ -50,11 +73,18 @@ const doctorSlice = createSlice({
       })
       .addCase(getPatients.rejected, (state, action) => {
         state.patients = [];
+      })
+      .addCase(getNewPatientCode.fulfilled, (state, action) => {
+        state.newPatientCode = action.payload;
+      })
+      .addCase(getNewPatientCode.rejected, (state, action) => {
+        state.newPatientCode = "";
       });
   },
 });
 
 export const selectPatientsList = (state) => state.doctor.patients;
+export const selectNewPatientCode = (state) => state.doctor.newPatientCode;
 export const { removePatients } = doctorSlice.actions;
 
 export default doctorSlice.reducer;
