@@ -13,6 +13,7 @@ import {
   selectIsLoggedIn,
   logOutReducer,
 } from "../../../features/auth/state/authSlice";
+import { isStaff } from "../../../features/auth/services/authService";
 
 function Header() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -47,20 +48,24 @@ function Header() {
           {isLoggedIn && (
             <>
               <Nav className="me-auto">
-                <LinkContainer to="/patients">
-                  <Nav.Link>Pacientes</Nav.Link>
-                </LinkContainer>
-                <NavDropdown title="Configuración">
-                  <LinkContainer to="/">
-                    <NavDropdown.Item>Cambiar contraseña</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/">
-                    <NavDropdown.Item>Link</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/">
-                    <NavDropdown.Item>Link</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
+                {isStaff() && (
+                  <>
+                    <LinkContainer to="/patients">
+                      <Nav.Link>Pacientes</Nav.Link>
+                    </LinkContainer>
+                    <NavDropdown title="Configuración">
+                      <LinkContainer to="/">
+                        <NavDropdown.Item>Cambiar contraseña</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/">
+                        <NavDropdown.Item>Link</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/">
+                        <NavDropdown.Item>Link</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                  </>
+                )}
               </Nav>
               <Form>
                 <Button

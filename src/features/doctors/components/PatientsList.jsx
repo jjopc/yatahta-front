@@ -9,7 +9,7 @@ import {
 } from "../state/doctorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../auth/state/authSlice";
-import { getUser } from "../../auth/services/authService";
+import { getUser, isStaff } from "../../auth/services/authService";
 import {
   Container,
   Row,
@@ -42,7 +42,7 @@ export default function DoctorPatients() {
   const patients = useSelector(selectPatientsList);
   const newPatientCode = useSelector(selectNewPatientCode);
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || !isStaff()) {
     return <Navigate to={"/"} />;
   }
 
