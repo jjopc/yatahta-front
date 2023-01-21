@@ -47,7 +47,7 @@ export const logInReducer = createAsyncThunk(
         "yatahta.auth",
         JSON.stringify(response.data)
       );
-      return response;
+      return response.data;
     } catch (error) {
       const message = error.response.data.detail;
       thunkAPI.dispatch(setMessage(message));
@@ -74,6 +74,7 @@ export const authSlice = createSlice({
       window.localStorage.removeItem("yatahta.auth");
       state.isLoggedIn = false;
       state.user = null;
+      window.location.reload();
     },
   },
   extraReducers(builder) {
@@ -92,7 +93,7 @@ export const authSlice = createSlice({
       .addCase(logInReducer.fulfilled, (state, action) => {
         console.log("Estoy en FULFILLED de logInReducer en AuthSlice");
         state.isLoggedIn = true;
-        state.user = getUser(JSON.stringify(action.payload.data));
+        state.user = getUser(JSON.stringify(action.payload));
       })
       .addCase(logInReducer.rejected, (state, action) => {
         console.log("Estoy en REJECTED de logInReducer en AuthSlice");
