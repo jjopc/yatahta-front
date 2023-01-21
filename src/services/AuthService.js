@@ -1,4 +1,5 @@
 export const getUser = (data = window.localStorage.getItem("yatahta.auth")) => {
+  // console.log("AUTH_SERVICE -> getUser, data: ", data);
   // const auth = JSON.parse(window.localStorage.getItem("yatahta.auth"));
   if (data) {
     const auth = JSON.parse(data);

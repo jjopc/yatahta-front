@@ -3,11 +3,11 @@ import { setMessage } from "./messageSlice";
 import { getUser, getAuthHeader } from "../services/AuthService";
 import axios from "axios";
 
-const user = getUser();
-
 export const getPatients = createAsyncThunk(
   "doctor/getPatients",
   async (arg, thunkAPI) => {
+    const user = getUser();
+    // console.log("AUTH_SLICE -> getPatients, user: ", user);
     const url = `${import.meta.env.VITE_API_URL}/users/${
       user.user_id
     }/patients_list/`;
@@ -31,23 +31,30 @@ export const getPatients = createAsyncThunk(
   }
 );
 
-const initialState = [];
+const initialState = {
+  patients: [],
+};
 
 const doctorSlice = createSlice({
   name: "doctor",
   initialState,
-  reducers: {},
+  reducers: {
+    removePatients(state, actions) {
+      state.patients = [];
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(getPatients.fulfilled, (state, action) => {
-        return action.payload;
+        state.patients = action.payload;
       })
       .addCase(getPatients.rejected, (state, action) => {
-        state = [];
+        state.patients = [];
       });
   },
 });
 
-export const selectPatientsList = (state) => state.doctor;
+export const selectPatientsList = (state) => state.doctor.patients;
+export const { removePatients } = doctorSlice.actions;
 
 export default doctorSlice.reducer;
