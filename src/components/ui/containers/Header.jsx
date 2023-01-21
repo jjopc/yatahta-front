@@ -9,7 +9,10 @@ import {
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { selectIsLoggedIn, logOutReducer } from "../../../state/authSlice";
+import {
+  selectIsLoggedIn,
+  logOutReducer,
+} from "../../../features/auth/state/authSlice";
 
 function Header() {
   const isLoggedIn = useSelector(selectIsLoggedIn);

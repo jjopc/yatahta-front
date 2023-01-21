@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setMessage } from "./messageSlice";
-import { getUser, getAuthHeader } from "../services/AuthService";
+import { setMessage } from "../../../state/messageSlice";
+import { getUser, getAuthHeader } from "../../auth/services/authService";
 import axios from "axios";
 
 export const getPatients = createAsyncThunk(

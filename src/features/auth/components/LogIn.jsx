@@ -16,8 +16,8 @@ import * as Yup from "yup";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logInReducer, selectIsLoggedIn } from "../state/authSlice";
-import { clearMessage, selectMessage } from "../state/messageSlice";
-import Layout from "./ui/Layout";
+import { clearMessage, selectMessage } from "../../../state/messageSlice";
+import Layout from "../../../components/ui/Layout";
 
 export default function LogIn() {
   const [isSubmitted, setSubmitted] = useState(false);

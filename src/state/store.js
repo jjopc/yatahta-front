@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
+import authReducer from "../features/auth/state/authSlice";
 import messageReducer from "./messageSlice";
-import doctorReducer from "./doctorSlice";
+import doctorReducer from "../features/doctors/state/doctorSlice";
 import storage from "redux-persist/lib/storage";
 import {
   persistReducer,

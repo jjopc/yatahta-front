@@ -3,7 +3,7 @@ import { Container, Row, Col, Breadcrumb, Table } from "react-bootstrap";
 import {
   getGeneralStatistics,
   getUsersClassification,
-} from "../services/StatisticsService";
+} from "../services/statisticsService";
 
 export default function DoctorDashboard(props) {
   const [statistics, setStatistics] = useState({});

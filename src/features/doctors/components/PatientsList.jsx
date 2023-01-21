@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import Layout from "./ui/Layout";
+import Layout from "./../../../components/ui/Layout";
 import { getPatients, selectPatientsList } from "../state/doctorSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../state/authSlice";
+import { selectIsLoggedIn } from "../../auth/state/authSlice";
 import {
   Container,
   Row,

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setMessage } from "./messageSlice";
-import { removePatients } from "./doctorSlice";
-import { getUser, getAuthHeader } from "../services/AuthService";
+import { setMessage } from "../../../state/messageSlice";
+import { removePatients } from "../../doctors/state/doctorSlice";
+import { getUser, getAuthHeader } from "../services/authService";
 import axios from "axios";
 
 export const registerDoctorReducer = createAsyncThunk(
