@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setMessage } from "./messageSlice";
-import { getUser, getAuthHeader } from "../services/AuthService";
+import { setMessage } from "../../../state/messageSlice";
+import { removePatients } from "../../doctors/state/doctorSlice";
+import { getUser, getAuthHeader } from "../services/authService";
 import axios from "axios";
-
-const user = getUser();
 
 export const registerDoctorReducer = createAsyncThunk(
   "auth/registerDoctor",
@@ -51,32 +50,24 @@ export const logInReducer = createAsyncThunk(
     } catch (error) {
       const message = error.response.data.detail;
       thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
-const initialState = user
-  ? {
-      isLoggedIn: true,
-      user,
-    }
-  : {
-      isLoggedIn: false,
-      user: null,
-    };
+export const logOutReducer = createAsyncThunk("auth/logOut", (_, thunkAPI) => {
+  thunkAPI.dispatch(removePatients());
+});
+
+const initialState = {
+  isLoggedIn: false,
+  user: null,
+};
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    logOutReducer(state, action) {
-      window.localStorage.removeItem("yatahta.auth");
-      state.isLoggedIn = false;
-      state.user = null;
-      window.location.reload();
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(registerDoctorReducer.fulfilled, (state, action) => {
@@ -99,15 +90,15 @@ export const authSlice = createSlice({
         console.log("Estoy en REJECTED de logInReducer en AuthSlice");
         state.isLoggedIn = false;
         state.user = null;
+      })
+      .addCase(logOutReducer.fulfilled, (state, action) => {
+        state.isLoggedIn = false;
+        state.user = null;
       });
-    // .addCase(logOutReducer.fulfilled, (state, action) => {
-    //   state.isLoggedIn = false;
-    //   state.user = null;
-    // });
   },
 });
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
-export const { logOutReducer } = authSlice.actions;
+export const selectUser = (state) => state.auth.user;
 
 export default authSlice.reducer;

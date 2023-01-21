@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getAuthHeader } from "./AuthService";
+import { getAuthHeader } from "../../auth/services/authService";
 
 export const getGeneralStatistics = async () => {
   const url = `${import.meta.env.VITE_API_URL}/statistics/`;

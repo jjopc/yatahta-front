@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import Layout from "./ui/Layout";
-import { getPatients, selectPatientsList } from "../state/doctorSlice";
+import Layout from "./../../../components/ui/Layout";
+import {
+  getPatients,
+  selectPatientsList,
+  getNewPatientCode,
+  selectNewPatientCode,
+} from "../state/doctorSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../auth/state/authSlice";
+import { getUser } from "../../auth/services/authService";
 import {
   Container,
   Row,
@@ -12,18 +19,33 @@ import {
   Button,
   Form,
   ButtonGroup,
+  Modal,
 } from "react-bootstrap";
 
 export default function DoctorPatients() {
   const [searchText, setSearchText] = useState("");
+  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
     dispatch(getPatients());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (show) {
+      dispatch(getNewPatientCode());
+    }
+  }, [show]);
+
   const patients = useSelector(selectPatientsList);
+  const newPatientCode = useSelector(selectNewPatientCode);
+
+  if (!isLoggedIn) {
+    return <Navigate to={"/"} />;
+  }
+
   const orderedPatients = patients.slice().sort((a, b) => a.points < b.points);
   let filteredPatients = orderedPatients;
   if (searchText !== "") {
@@ -36,12 +58,47 @@ export default function DoctorPatients() {
     });
   }
 
+  const user = getUser();
+
   return (
     <Layout>
       <Breadcrumb>
         <Breadcrumb.Item href="/#/">Inicio</Breadcrumb.Item>
         <Breadcrumb.Item active>Pacientes</Breadcrumb.Item>
       </Breadcrumb>
+      <Modal
+        show={show}
+        fullscreen="sm-down"
+        onHide={() => setShow(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <img
+            src="src/assets/addpatient.png"
+            alt="Añadir nuevo paciente imagen"
+            width={50}
+            height={50}
+            className="me-3"
+          />
+          <Modal.Title>Añadir nuevo paciente</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col>
+              <strong>Código del médico:</strong>
+            </Col>
+            <Col>{user.user_id}</Col>
+          </Row>
+          <Row>
+            <Col>
+              <strong>Código del paciente:</strong>
+            </Col>
+            <Col style={{ fontFamily: "monospace", fontSize: "1.2rem" }}>
+              {newPatientCode}
+            </Col>
+          </Row>
+        </Modal.Body>
+      </Modal>
       <Container>
         <h2>Tus pacientes</h2>
         <Row>
@@ -49,8 +106,7 @@ export default function DoctorPatients() {
             Introduzca el nombre, ID o código de un usuario para buscarlo
           </Col>
           <Col xs="auto">
-            {/* TODO: Dirigir a /add-patient */}
-            <Button onClick={() => navigate("/")}>Añadir paciente</Button>
+            <Button onClick={() => setShow(true)}>Añadir paciente</Button>
           </Col>
         </Row>
         <Row>

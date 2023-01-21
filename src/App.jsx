@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import LogIn from "./components/LogIn";
+import LogIn from "./features/auth/components/LogIn";
 
 import "./App.css";
-import DoctorPatients from "./components/DoctorPatients";
+import PatientList from "./features/doctors/components/PatientsList";
 import Home from "./components/Home";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/log-in" element={<LogIn />} />
-      <Route path="/patients" element={<DoctorPatients />} />
+      <Route path="/patients" element={<PatientList />} />
     </Routes>
   );
 }
