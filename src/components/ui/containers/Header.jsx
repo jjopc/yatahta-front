@@ -24,7 +24,7 @@ function Header() {
         bg="primary"
         variant="dark"
         expand="lg"
-        className="px-3 mb-3"
+        className="px-3"
       >
         <LinkContainer to="/">
           <Navbar.Brand>

@@ -14,7 +14,7 @@ export default function Landing() {
     <Container>
       <Row xs="auto" className="align-content-center justify-content-center">
         <Col>
-          <Card className="shadow">
+          <Card className="shadow mt-3">
             <Card.Body>
               <Container
                 style={{
