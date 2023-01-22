@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../auth/state/authSlice";
 import { getUser, isStaff } from "../../auth/services/authService";
+import addPatientImg from "../../../../assets/addpatient.png"
 import {
   Container,
   Row,
@@ -74,7 +75,7 @@ export default function DoctorPatients() {
       >
         <Modal.Header closeButton>
           <img
-            src="src/assets/addpatient.png"
+            src={addPatientImg}
             alt="Añadir nuevo paciente imagen"
             width={50}
             height={50}

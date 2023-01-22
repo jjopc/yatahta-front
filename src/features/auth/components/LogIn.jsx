@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logInReducer, selectIsLoggedIn } from "../state/authSlice";
 import { clearMessage, selectMessage } from "../../../state/messageSlice";
 import Layout from "../../../components/ui/Layout";
+import logo from "../../../../assets/stethoscope.svg"
 
 export default function LogIn() {
   const [isSubmitted, setSubmitted] = useState(false);
@@ -87,7 +88,7 @@ export default function LogIn() {
                 }}
               >
                 <img
-                  src="src/assets/stethoscope.svg"
+                  src={logo}
                   alt="Logo de YATA HTA"
                   width={50}
                   height={50}

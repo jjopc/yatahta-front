@@ -14,6 +14,7 @@ import {
   logOutReducer,
 } from "../../../features/auth/state/authSlice";
 import { isStaff } from "../../../features/auth/services/authService";
+import logo from "../../../../assets/stethoscope.svg";
 
 function Header() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -34,7 +35,7 @@ function Header() {
           <Navbar.Brand>
             <img
               alt="Logo de YATA HTA"
-              src="src/assets/stethoscope.svg"
+              src={logo}
               width="30"
               height="30"
               className="d-inline-block align-top"
