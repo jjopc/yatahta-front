@@ -13,10 +13,39 @@ import {
   Breadcrumb,
   Table,
   Button,
-  Form,
   ButtonGroup,
-  Modal,
 } from "react-bootstrap";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
+
+const convertDateToLocale = (date) => {
+  return new Date(date).toLocaleDateString("es", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
 
 function PatientProfile() {
   const { userId } = useParams();
@@ -34,11 +63,54 @@ function PatientProfile() {
     return <div>Cargando...</div>;
   }
 
-  let birthday = new Date(patient.birthday).toLocaleDateString("es", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  let birthday = convertDateToLocale(patient.birthday);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: false,
+        text: "Tensiones del paciente",
+      },
+    },
+  };
+
+  const labels = patient.pressurelist.map((pressure) =>
+    convertDateToLocale(pressure.date)
+  );
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Sistólica",
+        data: patient.pressurelist.map((pressure) => pressure.systolic),
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.3)",
+        fill: true,
+        tension: 0.3,
+      },
+      {
+        label: "Diastólica",
+        data: patient.pressurelist.map((pressure) => pressure.diastolic),
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.3)",
+        fill: true,
+        tension: 0.3,
+      },
+      {
+        label: "Puls/min",
+        data: patient.pressurelist.map((pressure) => pressure.bpm),
+        borderColor: "rgb(84, 195, 84)",
+        backgroundColor: "rgba(84, 195, 84, 0.3)",
+        fill: true,
+        tension: 0.3,
+      },
+    ],
+  };
 
   return (
     <Layout>
@@ -76,7 +148,9 @@ function PatientProfile() {
           <Col as={"h3"}>Gráfico de tensiones del paciente</Col>
         </Row>
         <Row>
-          <Col>GRÁFICO</Col>
+          <Col>
+            <Line options={options} data={data} className="mt-3 mb-3" />
+          </Col>
         </Row>
         <Row>
           <Col as={"h3"}>Tabla de tomas de tensión</Col>
