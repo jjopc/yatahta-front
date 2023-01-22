@@ -8,6 +8,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import logo from "../../assets/stethoscope.svg";
 
 export default function Landing() {
   return (
@@ -24,7 +25,7 @@ export default function Landing() {
                 }}
               >
                 <img
-                  src="src/assets/stethoscope.svg"
+                  src={logo}
                   alt="Logo de YATA HTA"
                   width={90}
                   height={90}
