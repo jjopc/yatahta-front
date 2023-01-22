@@ -18,7 +18,7 @@ import { combineReducers } from "redux";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "doctor"],
 };
 
 const reducers = combineReducers({
