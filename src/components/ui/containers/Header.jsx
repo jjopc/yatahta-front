@@ -28,7 +28,7 @@ function Header() {
         collapseOnSelect
         bg="primary"
         variant="dark"
-        expand="lg"
+        expand="sm"
         className="px-3"
       >
         <LinkContainer to="/">

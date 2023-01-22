@@ -6,11 +6,12 @@ import {
   selectPatientsList,
   getNewPatientCode,
   selectNewPatientCode,
+  getPatientInfo,
 } from "../state/doctorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../auth/state/authSlice";
 import { getUser, isStaff } from "../../auth/services/authService";
-import addPatientImg from "../../../../assets/addpatient.png"
+import addPatientImg from "../../../../assets/addpatient.png";
 import {
   Container,
   Row,
@@ -26,6 +27,7 @@ import {
 export default function DoctorPatients() {
   const [searchText, setSearchText] = useState("");
   const [show, setShow] = useState(false);
+  const [patientId, setPatientId] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -39,6 +41,13 @@ export default function DoctorPatients() {
       dispatch(getNewPatientCode());
     }
   }, [show]);
+
+  useEffect(() => {
+    if (patientId) {
+      dispatch(getPatientInfo(patientId));
+      navigate(`/patients/${patientId}`);
+    }
+  }, [patientId]);
 
   const patients = useSelector(selectPatientsList);
   const newPatientCode = useSelector(selectNewPatientCode);
@@ -152,7 +161,14 @@ export default function DoctorPatients() {
                       <td>
                         <ButtonGroup>
                           {/* TODO: Implementar estas acciones */}
-                          <Button id="info" size="sm" variant="outline-primary">
+                          <Button
+                            id="info"
+                            size="sm"
+                            variant="outline-primary"
+                            onClick={() => {
+                              setPatientId(user.id);
+                            }}
+                          >
                             Información
                           </Button>
                           <Button

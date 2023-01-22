@@ -53,9 +53,32 @@ export const getNewPatientCode = createAsyncThunk(
   }
 );
 
+export const getPatientInfo = createAsyncThunk(
+  "doctor/getPatientInfo",
+  async (patient_id, thunkAPI) => {
+    const url = `${import.meta.env.VITE_API_URL}/users/${patient_id}/`;
+    const headers = getAuthHeader();
+    try {
+      const response = await axios.get(url, { headers });
+      return response.data;
+    } catch (error) {
+      console.error("ERROR getPatients en doctorSlice");
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const initialState = {
   patients: [],
   newPatientCode: "",
+  patientInfo: {},
 };
 
 const doctorSlice = createSlice({
@@ -79,6 +102,12 @@ const doctorSlice = createSlice({
       })
       .addCase(getNewPatientCode.rejected, (state, action) => {
         state.newPatientCode = "";
+      })
+      .addCase(getPatientInfo.fulfilled, (state, action) => {
+        state.patientInfo = action.payload;
+      })
+      .addCase(getPatientInfo.rejected, (state, action) => {
+        state.patientInfo = {};
       });
   },
 });
